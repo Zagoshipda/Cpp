@@ -34,17 +34,34 @@ class Public : public Base{
 // struct A {};
 // class B: /* private */ A {};
 
-class None : Base{
+class None : Base{  // class None : private Base 
 
 };
 
 int main(void){
-    Public pub;
-    Protected pro;
+    Base b;         //n1: private, n2: protected, n3: public 
+    Public pub;     //n2: protected, n3: public
+    Protected pro;  //n2: protected, n3: protected
+    None no;        //n2: private, n3: private
     
-    cout << pub.n2 << endl; //error: 'int Base::n2' is protected within this context
-    cout << pub.n3 << endl;
+    // 1. 우선 클래스 외부에서는 public으로 선언된 변수들에만 접근할 수 있음
+    // cout << b.n1 << ' ' << b.n2 << ' ' << endl; //error: 'int Base::n1' is private, 'int Base::n2' is protected
+    cout << b.n3 << endl;       //3
+
+    // 2. public으로 상속하는 경우는 private은 접근불가, protected는 protected그대로, public은 public그대로 상속 
+    // cout << pub.n1 << endl;  //error: 'int Base::n1' is private
+    // cout << pub.n2 << endl;  //error: 'int Base::n2' is protected 
+    cout << pub.n3 << endl;     //3
+    
+    // 3. protected로 상속하는 경우는 private은 접근불가, protected는 protected그대로, public은 protected로 바뀌어서 상속
+    // cout << pro.n1 << endl; //error: 'int Base::n1' is private
+    // cout << pro.n2 << endl; //error: 'int Base::n2' is protected
     // cout << pro.n3 << endl; //error: 'int Base::n3' is inaccessible
+    
+    // 3. private으로 상속하는 경우는 private은 접근불가, protected는 private으로 바뀌어서, public은 private으로 바뀌어서 상속
+    // cout << no.n1 << endl;  //error: 'int Base::n1' is private
+    // cout << no.n2 << endl;  //error: 'int Base::n2' is protected
+    // cout << no.n3 << endl;  //error: 'int Base::n3' is inaccessible
 
 
     return 0;
